@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+            <!--使用JDBC的获取出具库自增的主键值-->
+        <setting name="useGeneratedKeys" value="true"/>
+            <!--使用列别名代替列名-->
+        <setting name="useColumnLabel" value="true"></setting>
+        <!--开启驼峰命名-->
+        <setting name="mapUnderscoreToCamelCase" value="true"></setting>
+
+        <!-- 开启缓存 -->
+        <setting name="cacheEnabled" value="true"/>
+        <!-- 启用懒加载 -->
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <setting name="aggressiveLazyLoading" value="flase"/>
+    </settings>
+        <!--启用别名-->
+    <typeAliases>
+        <package name="org.seckill.entity"/>
+    </typeAliases>
+    <!-- 配置分页的插件 -->
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <!--配置合理化分页属性,当传递的页码超过总的页码数,直接访问最后一页-->
+            <property name="reasonable" value="true"></property>
+        </plugin>
+    </plugins>
+</configuration>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.seckill.dao.SuccessKilledMapper">
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
+    <!--
+        插入购买明细(可以过滤重复)
+        int insertSuccessKilled(long seckillId,long userPhone);
+    -->
+    <insert id="insertSuccessKilled">
+        insert ignore into success_killed (seckill_Id,user_phone,state)
+        values (#{seckillId},#{userPhone},0)
+    </insert>
+    <!--
+        根据seckilledId(秒杀商品的id)查询秒杀成功的对象
+        SuccessKilled queryByIdWithSeckill(long seckillId);
+    -->
+    <select id="queryByIdWithSeckill" resultType="SuccessKilled">
+        SELECT
+            sk.seckill_id,
+            sk.user_phone,
+            sk.create_time,
+            sk.state,
+            s.seckill_id "seckill.seckill_id",
+            s.name "seckill.name",
+            s.number "seckill.number",
+            s.start_time "seckill.start_time",
+            s.end_time "seckill.end_time",
+            s.create_time "seckill.create_time"
+        FROM success_killed sk
+        INNER JOIN seckill s ON sk.seckill_id=s.seckill_id
+        WHERE sk.seckill_id=#{seckillId} and sk.user_phone=#{userPhone}
+    </select>
+</mapper>
