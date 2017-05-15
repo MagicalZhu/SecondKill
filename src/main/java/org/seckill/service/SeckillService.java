@@ -16,7 +16,7 @@ public interface SeckillService {
     /** 显示秒杀商品的记录 */
     List<Seckill> getSeckillList();
     /** 根据商品的id查询单个商品的秒杀记录 */
-    Seckill getById(int seckillId);
+    Seckill getById(long seckillId);
 
     /** 秒杀开启时,输出秒杀接口的地址(防止用户对URL拼接,使用浏览器插件进行秒杀),否则输出系统时间和秒杀时间 */
     Exposer exportSeckillUrl(long seckillId);

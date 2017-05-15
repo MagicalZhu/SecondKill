@@ -35,7 +35,7 @@ public class SeckillMapperTest {
             System.out.println(s.getName());    //1000元秒杀iPhone 7 Plus 9000元秒杀Alienware 500元秒杀小米5  200元秒杀红米2
         }
     }
-    @Test   //商品的数量 减1
+    @Test   //商品的数量 减1 //TODO
     public void reduceNumber() throws Exception {
         Date killTime=new Date();
         int UpdateCount=seckillMapper.reduceNumber(1000,killTime);

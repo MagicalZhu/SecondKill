@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.seckill.dao.SuccessKilledMapper">
-    <cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
     <!--
         插入购买明细(可以过滤重复)
         int insertSuccessKilled(long seckillId,long userPhone);
     -->
     <insert id="insertSuccessKilled">
-        insert ignore into success_killed (seckill_Id,user_phone,state)
-        values (#{seckillId},#{userPhone},0)
+        <!--当出现主键冲突时(即重复秒杀时)，会报错;不想让程序报错，加入ignore-->
+        INSERT ignore INTO success_killed(seckill_id,user_phone,state)
+        VALUES (#{seckillId},#{userPhone},0)
     </insert>
     <!--
         根据seckilledId(秒杀商品的id)查询秒杀成功的对象
