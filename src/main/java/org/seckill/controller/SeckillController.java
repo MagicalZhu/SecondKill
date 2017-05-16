@@ -1,6 +1,6 @@
 package org.seckill.controller;
 
-import org.seckill.SeckillStatEnum;
+import org.seckill.Enum.SeckillStatEnum;
 import org.seckill.dto.Exposer;
 import org.seckill.dto.SeckillExecution;
 import org.seckill.dto.SeckillResult;
@@ -69,7 +69,8 @@ public class SeckillController {
         }
         SeckillResult<SeckillExecution> result;
         try {
-            SeckillExecution execution=seckillService.executeSeckill(seckillId,userPhone,md5);      //执行秒杀
+            //SeckillExecution execution=seckillService.executeSeckill(seckillId,userPhone,md5);      //执行秒杀
+            SeckillExecution execution=seckillService.executeSeckillByProcedure(seckillId,userPhone,md5);     // 通过存储过程执行秒杀
             return new SeckillResult<SeckillExecution>(true,execution);
         }
         catch (RepeatKillException e1)                          //如果重复秒杀

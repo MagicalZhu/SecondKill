@@ -1,4 +1,4 @@
-package org.seckill;
+package org.seckill.Enum;
 
 /**
  * @author Administrator

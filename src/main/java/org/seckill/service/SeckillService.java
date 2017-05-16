@@ -22,4 +22,7 @@ public interface SeckillService {
     Exposer exportSeckillUrl(long seckillId);
     /** 执行秒杀操作*/
     SeckillExecution executeSeckill(long seckillId, long userPhone, String md5) throws SeckillException;
+
+    /** 执行秒杀操作通过存储过程 */
+    SeckillExecution executeSeckillByProcedure(long seckillId, long userPhone, String md5) throws SeckillException;
 }

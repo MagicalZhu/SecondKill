@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2017/5/14 0014.
@@ -21,4 +22,7 @@ public interface SeckillMapper {
     Seckill queryById(long seckillId);
     //获取所有的商品
     List<Seckill> queryAll(@Param("offset") int offset, @Param("limit") int limit);
+
+    //使用存储过程执行秒杀
+    void killByProcedure(Map<String,Object> paramMap);
 }

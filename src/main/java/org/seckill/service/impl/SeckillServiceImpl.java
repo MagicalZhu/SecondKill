@@ -1,6 +1,7 @@
 package org.seckill.service.impl;
 
-import org.seckill.SeckillStatEnum;
+import org.apache.commons.collections.MapUtils;
+import org.seckill.Enum.SeckillStatEnum;
 import org.seckill.dao.SeckillMapper;
 import org.seckill.dao.SuccessKilledMapper;
 import org.seckill.dao.cache.RedisDao;
@@ -20,7 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Administrator
@@ -114,6 +117,34 @@ public class SeckillServiceImpl implements SeckillService{
             //所以编译期异常转化为运行期异常
             throw new SeckillException("seckill inner error :"+e.getMessage());
         }
-
     }
+
+    /** 具体的执行秒杀-->使用存储过程,将插入订单详细和减库存操作合并 */
+    public SeckillExecution executeSeckillByProcedure(long seckillId, long userPhone, String md5) {
+        if (md5==null||!md5.equals(getMD5(seckillId))){
+            return new SeckillExecution(seckillId,SeckillStatEnum.DATE_REWRITE);
+        }
+        Date  killTime=new Date();
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("seckillId", seckillId);
+        map.put("phone", userPhone);
+        map.put("killTime", killTime);
+        map.put("result", null);
+        // 执行存储过程，result被赋值
+        try {
+            seckillMapper.killByProcedure(map);
+            // 获取result
+            int result = MapUtils.getInteger(map, "result", -2);
+            if (result == 1) {
+                SuccessKilled sk = successKilledMapper.queryByIdWithSeckill(seckillId, userPhone);
+                return new SeckillExecution(seckillId, SeckillStatEnum.SUCCESS, sk);
+            } else {
+                return new SeckillExecution(seckillId, SeckillStatEnum.stateOf(result));
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return new SeckillExecution(seckillId, SeckillStatEnum.INNER_ERROR);
+        }
+    }
+
 }

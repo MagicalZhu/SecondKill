@@ -1,6 +1,6 @@
 package org.seckill.dto;
 
-import org.seckill.SeckillStatEnum;
+import org.seckill.Enum.SeckillStatEnum;
 import org.seckill.entity.SuccessKilled;
 
 /**
